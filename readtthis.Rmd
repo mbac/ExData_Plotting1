@@ -1,0 +1,17 @@
+---
+title: "Coursera Exloratory Data Analysis – Week 1 Project"
+author: "Marco Baciarello"
+date: "1/6/2021"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, message=FALSE, warning=FALSE)
+```
+
+## Data Preparation
+
+```{r DataPrep, echo=TRUE, message=FALSE, warning=FALSE}
+
+```
+
