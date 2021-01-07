@@ -30,23 +30,27 @@ unzip("data/main.zip", exdir = "data")
 This is a huge semi-colon-delimited file. For performance reasons, it would make sense to store it into a `data.table`. Since it's relatively easy to select the two dates that are requested for the assignment, we can subset the data using string matching rather than converting it to proper Date classes:
 
 ```{r DataLoad}
-tic("Read data")
 # Caught a couple of lines with '?' instead of empty cells, which caused
 # problems with type conversion. Use na.strings arg.
 bigdata <- fread("data/household_power_consumption.txt", na.strings = "?")
-toc()
 
-tic("Subset version")
 # Select the 2 dates requested by the exercise
 data <- bigdata[Date %like% "^[12]{1}\\/2\\/2007",]
 
 # Cast the now-leaner data set into lubdridate-made POSIX. Note that it may be more concise to join Date and Time into a single vector, using paste.
 data[, DateTime := lubridate::dmy_hms(paste(Date, Time, sep = " "))]
-toc()
-
-tic("Full data set cast")
-bigdata[, DateTime := lubridate::dmy_hms(paste(Date, Time, sep = " "))]
-toc()
 
 ```
+## Plotting
 
+Code for plots is contained in this section for readability. .R script files are also provided as requested by the assignment.
+
+```{r Plot1}
+with(data, hist(
+    Global_active_power,
+    col = 'red',
+    main = "Global Active Power",
+    xlab = "Global Active Power (kilowatts)"))
+dev.print(device = png, width = 480, height = 480, units = "pixels")
+
+```
