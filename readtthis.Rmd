@@ -46,11 +46,57 @@ data[, DateTime := lubridate::dmy_hms(paste(Date, Time, sep = " "))]
 Code for plots is contained in this section for readability. .R script files are also provided as requested by the assignment.
 
 ```{r Plot1}
+
+## Histogram
 with(data, hist(
     Global_active_power,
     col = 'red',
     main = "Global Active Power",
     xlab = "Global Active Power (kilowatts)"))
-dev.print(device = png, width = 480, height = 480, units = "pixels")
 
+# Print PNG file
+dev.print(  device = png,
+            width = 480,
+            height = 480,
+            units = "px",
+            file = 'plot1.png')
+
+```
+
+```{r Plot2}
+## Line graph over time
+with(data, plot(
+    Global_active_power ~ DateTime,
+    type = "l",
+    ylab = "Global Active Power (kilowatts)"))
+
+# Print PNG file
+dev.print(  device = png,
+            width = 480,
+            height = 480,
+            units = "px",
+            file = 'plot2.png')
+```
+
+```{r Plot3}
+
+## Multivariate line graph over time
+with(data, plot(
+    Sub_metering_1 ~ DateTime,
+    type = "l",
+    ylab = "Energy sub metering"))
+
+with(data, lines(Sub_metering_2 ~ DateTime, type = "l", col = "red"))
+with(data, lines(Sub_metering_3 ~ DateTime, type = "l", col = "blue"))
+
+# Print PNG file
+dev.print(  device = png,
+            width = 480,
+            height = 480,
+            units = "px",
+            file = 'plot2.png')
+```
+
+
+```{r Plot4}
 ```
