@@ -94,9 +94,46 @@ dev.print(  device = png,
             width = 480,
             height = 480,
             units = "px",
-            file = 'plot2.png')
+            file = 'plot3.png')
 ```
 
 
 ```{r Plot4}
+# Four plots in grid
+par(mfrow = c(2, 2))
+
+# Plot A = Plot 1
+with(data, plot(
+    Global_active_power ~ DateTime,
+    type = "l",
+    ylab = "Global Active Power (kilowatts)"))
+
+# Plot B
+with (data, plot(
+    Voltage ~ DateTime,
+    type = "l"
+))
+
+# Plot C = Plot 3
+## Multivariate line graph over time
+with(data, plot(
+    Sub_metering_1 ~ DateTime,
+    type = "l",
+    ylab = "Energy sub metering"))
+
+with(data, lines(Sub_metering_2 ~ DateTime, type = "l", col = "red"))
+with(data, lines(Sub_metering_3 ~ DateTime, type = "l", col = "blue"))
+
+# Plot D
+with(data, plot(
+    Global_reactive_power ~ DateTime,
+    type = "l"
+))
+
+# Print PNG file
+dev.print(  device = png,
+            width = 480,
+            height = 480,
+            units = "px",
+            file = 'plot4.png')
 ```
