@@ -1,17 +1,52 @@
 ---
 title: "Coursera Exloratory Data Analysis – Week 1 Project"
 author: "Marco Baciarello"
-date: "1/6/2021"
+date: "6/1/2021"
 output: html_document
 ---
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE, message=FALSE, warning=FALSE)
+
+library(tidyverse)
+library(data.table)
 ```
 
 ## Data Preparation
 
+Download data from the Internet, unzip and load into dataframe.
+
+**Important**: to avoid copyright issues, data are downloaded into a `data\` subdir, which is deliberately ignored by `git`, so it won't be found in the repository.
+
 ```{r DataPrep, echo=TRUE, message=FALSE, warning=FALSE}
+
+# Get file
+download.file("https://d396qusza40orc.cloudfront.net/exdata%2Fdata%2Fhousehold_power_consumption.zip", "data/main.zip")
+
+# Unzip—be advised that by defauly this gets extracted into working dir
+unzip("data/main.zip", exdir = "data")
+```
+
+This is a huge semi-colon-delimited file. For performance reasons, it would make sense to store it into a `data.table`. Since it's relatively easy to select the two dates that are requested for the assignment, we can subset the data using string matching rather than converting it to proper Date classes:
+
+```{r DataLoad}
+tic("Read data")
+# Caught a couple of lines with '?' instead of empty cells, which caused
+# problems with type conversion. Use na.strings arg.
+bigdata <- fread("data/household_power_consumption.txt", na.strings = "?")
+toc()
+
+tic("Subset version")
+# Select the 2 dates requested by the exercise
+data <- bigdata[Date %like% "^[12]{1}\\/2\\/2007",]
+
+# Cast the now-leaner data set into lubdridate-made POSIX. Note that it may be more concise to join Date and Time into a single vector, using paste.
+data[, DateTime := lubridate::dmy_hms(paste(Date, Time, sep = " "))]
+toc()
+
+tic("Full data set cast")
+bigdata[, DateTime := lubridate::dmy_hms(paste(Date, Time, sep = " "))]
+toc()
 
 ```
 
